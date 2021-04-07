@@ -1,0 +1,101 @@
+#ifndef lib_pcap_h
+00045 #define lib_pcap_h
+00046 
+00047 #include <pcap-stdinc.h>
+00048 #include <net/bpf.h>
+00049 
+00050 #include <stdio.h>
+00051 
+00052 #ifdef __cplusplus
+00053 extern "C" {
+00054 #endif
+00055 
+00056 #define PCAP_VERSION_MAJOR 2 
+00057 #define PCAP_VERSION_MINOR 4 
+00058 
+00059 #define PCAP_ERRBUF_SIZE 256 
+00060 
+00061 
+00065 #if BPF_RELEASE - 0 < 199406
+00066 typedef int bpf_int32; 
+00067 typedef u_int bpf_u_int32; 
+00068 #endif
+00069 
+00070 typedef struct pcap pcap_t; 
+00071 typedef struct pcap_dumper pcap_dumper_t; 
+00072 typedef struct pcap_if pcap_if_t; 
+00073 typedef struct pcap_addr pcap_addr_t; 
+00074 
+00110 struct pcap_file_header {
+00111     bpf_u_int32 magic;
+00112     u_short version_major; 
+00113     u_short version_minor; 
+00114     bpf_int32 thiszone; 
+00115     bpf_u_int32 sigfigs;    
+00116     bpf_u_int32 snaplen;    
+00117     bpf_u_int32 linktype;   
+00118 };
+00119 
+00126 struct pcap_pkthdr {
+00127     struct timeval ts;  
+00128     bpf_u_int32 caplen; 
+00129     bpf_u_int32 len;    
+00130 };
+00131 
+00136 struct pcap_stat {
+00137     u_int ps_recv;      
+00138     u_int ps_drop;      
+00139     u_int ps_ifdrop;    
+00140 #ifdef WIN32
+00141     u_int bs_capt;      
+00142 #endif /* WIN32 */
+00143 };
+00144 
+00148 struct pcap_if {
+00149     struct pcap_if *next; 
+00150     char *name;     
+00151     char *description;  
+00152     struct pcap_addr *addresses; 
+00153     u_int flags;        
+00154 };
+00155 
+00156 #define PCAP_IF_LOOPBACK    0x00000001  
+00157 
+00158 
+00161 struct pcap_addr {
+00162     struct pcap_addr *next; 
+00163     struct sockaddr *addr;      
+00164     struct sockaddr *netmask;   
+00165     struct sockaddr *broadaddr; 
+00166     struct sockaddr *dstaddr;   
+00167 };
+00168 
+00169 #if defined(WIN32)
+00170 
+00171 
+00172 #define MODE_CAPT 0 
+00173 #define MODE_STAT 1 
+00174 
+00175 #endif /* WIN32 */
+00176 
+00177 #ifdef __cplusplus
+00178 }
+00179 #endif
+00180 
+00181 #endif
+00182 
+
+struct bpf_insn {
+         u_short code;
+         u_char  jt;
+         u_char  jf;
+         bpf_u_int32 k;
+ };
+ 
+ 
+ struct bpf_program
+ {
+         UINT bf_len;                            
+         struct bpf_insn *bf_insns;      
+ };
+ 
